@@ -1,0 +1,248 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Request Blood | HemoConnect</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body class="register-page">
+
+<header class="navbar">
+    <a href="{{ url_for('home') }}" class="logo">
+        <span class="logo-icon">+</span>
+        HemoConnect
+    </a>
+
+    <nav>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('register') }}">Become a Donor</a>
+        <a href="{{ url_for('request_blood') }}">Request Blood</a>
+    </nav>
+</header>
+
+<main class="registration-container">
+
+    <!-- Introduction -->
+    <section class="registration-intro">
+        <p class="eyebrow">BLOOD DONOR COORDINATION</p>
+
+        <h1>Request <span>blood assistance.</span></h1>
+
+        <p>
+            Submit the patient's blood requirements.
+            HemoConnect will search the demonstration donor
+            database for potential compatible red blood cell donors.
+        </p>
+
+        <a href="{{ url_for('home') }}" class="back-link">
+            ← Back to Home
+        </a>
+    </section>
+
+    <!-- Blood Request Form -->
+    <section class="form-card">
+
+        <div class="form-heading">
+            <h2>Blood Request Form</h2>
+            <p>Complete all required fields.</p>
+        </div>
+
+        {% if error %}
+            <div class="message error-message" role="alert">
+                {{ error }}
+            </div>
+        {% endif %}
+
+        <form method="POST"
+              action="{{ url_for('request_blood') }}">
+
+            <div class="form-grid">
+
+                <!-- Patient Name -->
+                <div class="form-group">
+                    <label for="requester_name">
+                        Patient's Name *
+                    </label>
+
+                    <input
+                        type="text"
+                        id="requester_name"
+                        name="requester_name"
+                        placeholder="Enter patient's full name"
+                        maxlength="100"
+                        required
+                    >
+                </div>
+
+                <!-- Contact Number -->
+                <div class="form-group">
+                    <label for="requester_phone">
+                        Contact Phone Number *
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="requester_phone"
+                        name="requester_phone"
+                        placeholder="Enter contact number"
+                        maxlength="20"
+                        required
+                    >
+                </div>
+
+                <!-- Required Blood Group -->
+                <div class="form-group">
+                    <label for="blood_group">
+                        Required Blood Group *
+                    </label>
+
+                    <select
+                        id="blood_group"
+                        name="blood_group"
+                        required
+                    >
+                        <option value="">Choose group</option>
+
+                        {% for group in blood_groups %}
+                            <option value="{{ group }}">
+                                {{ group }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Blood Component -->
+                <div class="form-group">
+                    <label for="component">
+                        Blood Component *
+                    </label>
+
+                    <select
+                        id="component"
+                        name="component"
+                        required
+                    >
+                        {% for item in components %}
+                            <option value="{{ item }}">
+                                {{ item }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Quantity -->
+                <div class="form-group">
+                    <label for="units">
+                        Required Quantity *
+                    </label>
+
+                    <select
+                        id="units"
+                        name="units"
+                        required
+                    >
+                        <option value="1">1 unit</option>
+                        <option value="2">2 units</option>
+                        <option value="3">3 units</option>
+                        <option value="4">4 units</option>
+                    </select>
+                </div>
+
+                <!-- Urgency -->
+                <div class="form-group">
+                    <label for="urgency">
+                        Urgency *
+                    </label>
+
+                    <select
+                        id="urgency"
+                        name="urgency"
+                        required
+                    >
+                        {% for item in urgencies %}
+                            <option value="{{ item }}">
+                                {{ item }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Hospital Name -->
+                <div class="form-group">
+                    <label for="hospital_name">
+                        Hospital Name *
+                    </label>
+
+                    <input
+                        type="text"
+                        id="hospital_name"
+                        name="hospital_name"
+                        placeholder="Enter hospital name"
+                        maxlength="150"
+                        required
+                    >
+                </div>
+
+                <!-- Hospital Address -->
+                <div class="form-group full-width">
+                    <label for="hospital_address">
+                        Hospital Address *
+                    </label>
+
+                    <input
+                        type="text"
+                        id="hospital_address"
+                        name="hospital_address"
+                        placeholder="Enter hospital address"
+                        maxlength="250"
+                        required
+                    >
+                </div>
+
+            </div>
+
+            <!-- Submit -->
+            <button
+                class="button primary submit-button"
+                type="submit"
+            >
+                Find Potential Donors →
+            </button>
+
+            <p class="form-footnote">
+                Demonstration only. Contact the hospital blood bank
+                directly in an emergency. All matches require clinical
+                confirmation by qualified professionals.
+            </p>
+
+        </form>
+    </section>
+
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+
+    <a href="{{ url_for('home') }}"
+       class="logo footer-logo">
+
+        <span class="logo-icon">+</span>
+        HemoConnect
+
+    </a>
+
+    <p>Connecting Donors, Saving Lives.</p>
+
+</footer>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>
+

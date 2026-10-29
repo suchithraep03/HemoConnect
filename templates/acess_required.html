@@ -1,0 +1,179 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Access Required | HemoConnect</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f3f7f4;
+            color: #26352d;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 460px;
+            background: white;
+            padding: 40px 30px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            color: #176b4d;
+            margin-bottom: 25px;
+        }
+
+        .icon {
+            width: 85px;
+            height: 85px;
+            border-radius: 50%;
+            background: #e1f2e7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            font-size: 42px;
+        }
+
+        h1 {
+            font-size: 27px;
+            margin-bottom: 15px;
+            color: #176b4d;
+        }
+
+        .description {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #66756c;
+            margin-bottom: 25px;
+        }
+
+        .info {
+            background: #f2f7f3;
+            padding: 16px;
+            border-radius: 9px;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .button {
+            display: block;
+            width: 100%;
+            padding: 13px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: bold;
+            margin-top: 12px;
+            transition: 0.2s;
+        }
+
+        .primary {
+            background: #176b4d;
+            color: white;
+        }
+
+        .primary:hover {
+            background: #10543b;
+        }
+
+        .secondary {
+            background: #e9efeb;
+            color: #26352d;
+        }
+
+        .secondary:hover {
+            background: #dce7df;
+        }
+
+        .footer {
+            margin-top: 25px;
+            color: #89958d;
+            font-size: 12px;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="container">
+
+        <div class="logo">🩸 HemoConnect</div>
+
+        <div class="icon">🔒</div>
+
+        <h1>Access Required</h1>
+
+        <p class="description">
+            You need to log in to your HemoConnect account
+            before accessing this feature.
+        </p>
+
+        <div class="info">
+            <strong>Why do I need to log in?</strong>
+            <br>
+            Logging in allows HemoConnect to identify your account
+            and connect you with the appropriate blood donation
+            and blood request features.
+        </div>
+
+        <a
+            href="{{ url_for('login', next=next_page) }}"
+            class="button primary"
+        >
+            Log In
+        </a>
+
+        <a
+            href="{{ url_for('register') }}"
+            class="button secondary"
+        >
+            Create an Account
+        </a>
+
+        <a
+            href="{{ url_for('home') }}"
+            class="button secondary"
+        >
+            Back to Home
+        </a>
+
+        <div class="footer">
+            HemoConnect | College Blood Donor Coordination System
+        </div>
+
+    </main>
+
+</body>
+</html>
+

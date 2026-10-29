@@ -1,0 +1,433 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | HemoConnect</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        /* ==================================
+           LOGIN PAGE
+        ================================== */
+
+        .login-page {
+            min-height: 78vh;
+            padding: 70px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background:
+                radial-gradient(
+                    circle at top left,
+                    rgba(201, 47, 67, 0.09),
+                    transparent 35%
+                ),
+                #fffafa;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 460px;
+            margin: auto;
+        }
+
+        .login-card {
+            background: #ffffff;
+            padding: 42px;
+            border-radius: 20px;
+            border: 1px solid #f2dfe2;
+            box-shadow: 0 15px 45px rgba(80, 20, 30, 0.09);
+            transition: transform 0.3s ease,
+                        box-shadow 0.3s ease;
+        }
+
+        .login-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 50px rgba(80, 20, 30, 0.13);
+        }
+
+        .login-icon {
+            width: 65px;
+            height: 65px;
+            margin: 0 auto 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 18px;
+            background: #fff0f2;
+            color: #c92f43;
+            font-size: 38px;
+            font-weight: 800;
+        }
+
+        .login-heading {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-eyebrow {
+            color: #c92f43;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+        }
+
+        .login-heading h1 {
+            color: #20252b;
+            font-size: 30px;
+            line-height: 1.3;
+            margin-bottom: 12px;
+        }
+
+        .login-heading h1 span {
+            color: #c92f43;
+        }
+
+        .login-description {
+            color: #737780;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .login-form {
+            margin-top: 25px;
+        }
+
+        .login-form .form-group {
+            margin-bottom: 22px;
+        }
+
+        .login-form label {
+            display: block;
+            color: #30343b;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 9px;
+        }
+
+        .login-form input[type="email"] {
+            width: 100%;
+            padding: 14px 15px;
+            border: 1px solid #e3d8da;
+            border-radius: 10px;
+            background: #fff;
+            color: #20252b;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.25s ease,
+                        box-shadow 0.25s ease;
+        }
+
+        .login-form input[type="email"]:focus {
+            border-color: #c92f43;
+            box-shadow: 0 0 0 4px rgba(201, 47, 67, 0.10);
+        }
+
+        .login-form input[type="email"]::placeholder {
+            color: #a4a6ac;
+        }
+
+        .login-submit {
+            width: 100%;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 10px;
+            background: #c92f43;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.25s ease,
+                        transform 0.25s ease,
+                        box-shadow 0.25s ease;
+        }
+
+        .login-submit:hover {
+            background: #a91f35;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(201, 47, 67, 0.22);
+        }
+
+        .login-submit:active {
+            transform: translateY(0);
+        }
+
+        .login-message {
+            padding: 13px 15px;
+            margin-bottom: 20px;
+            border-radius: 9px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .login-error {
+            background: #fff0f2;
+            color: #a91f35;
+            border: 1px solid #f2c7ce;
+        }
+
+        .login-footer {
+            margin-top: 25px;
+            text-align: center;
+            font-size: 13px;
+            line-height: 2;
+            color: #737780;
+        }
+
+        .login-footer a {
+            color: #c92f43;
+            font-weight: 700;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .login-footer a:hover {
+            color: #a91f35;
+            text-decoration: underline;
+        }
+
+        .login-divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 25px 0;
+            color: #a4a6ac;
+            font-size: 12px;
+        }
+
+        .login-divider::before,
+        .login-divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #eee4e6;
+        }
+
+        .login-register-button {
+            display: block;
+            width: 100%;
+            padding: 13px 18px;
+            text-align: center;
+            border: 1px solid #c92f43;
+            border-radius: 10px;
+            color: #c92f43;
+            background: #fff;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: background 0.25s ease,
+                        color 0.25s ease;
+        }
+
+        .login-register-button:hover {
+            background: #fff0f2;
+            color: #a91f35;
+        }
+
+        .login-home-link {
+            display: inline-block;
+            margin-top: 22px;
+            color: #737780;
+            font-size: 13px;
+            text-decoration: none;
+        }
+
+        .login-home-link:hover {
+            color: #c92f43;
+        }
+
+        /* Responsive layout */
+
+        @media (max-width: 520px) {
+            .login-page {
+                padding: 40px 16px;
+            }
+
+            .login-card {
+                padding: 30px 22px;
+                border-radius: 16px;
+            }
+
+            .login-heading h1 {
+                font-size: 25px;
+            }
+
+            .login-icon {
+                width: 58px;
+                height: 58px;
+                font-size: 33px;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <header class="navbar">
+
+        <a href="{{ url_for('home') }}" class="logo">
+            <span class="logo-icon">+</span>
+            HemoConnect
+        </a>
+
+        <nav>
+            <a href="{{ url_for('home') }}">Home</a>
+
+            <a href="{{ url_for('register') }}" class="nav-button">
+                Register
+            </a>
+        </nav>
+
+    </header>
+
+
+    <!-- Login Section -->
+    <main>
+
+        <section class="login-page">
+
+            <div class="login-container">
+
+                <div class="login-card">
+
+                    <!-- Icon -->
+                    <div class="login-icon">+</div>
+
+
+                    <!-- Heading -->
+                    <div class="login-heading">
+
+                        <p class="login-eyebrow">
+                            WELCOME BACK
+                        </p>
+
+                        <h1>
+                            Login to <span>HemoConnect</span>
+                        </h1>
+
+                        <p class="login-description">
+                            Welcome back to your campus community.
+                            Enter your registered email to continue.
+                        </p>
+
+                    </div>
+
+
+                    <!-- Error Message -->
+                    {% if error %}
+
+                        <div class="login-message login-error"
+                             role="alert">
+                            {{ error }}
+                        </div>
+
+                    {% endif %}
+
+
+                    <!-- Login Form -->
+                    <form
+                        method="POST"
+                        action="{{ url_for('login') }}"
+                        class="login-form"
+                    >
+
+                        <div class="form-group">
+
+                            <label for="email">
+                                Registered Email Address
+                            </label>
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="you@example.com"
+                                autocomplete="email"
+                                required
+                            >
+
+                        </div>
+
+
+                        <input
+                            type="hidden"
+                            name="next"
+                            value="{{ request.args.get('next', 'dashboard') }}"
+                        >
+
+
+                        <button type="submit" class="login-submit">
+                            Continue →
+                        </button>
+
+                    </form>
+
+
+                    <!-- Registration Option -->
+                    <div class="login-divider">
+                        NEW TO HEMOCONNECT?
+                    </div>
+
+                    <a
+                        href="{{ url_for('register') }}"
+                        class="login-register-button"
+                    >
+                        Create a Donor Account
+                    </a>
+
+
+                    <!-- Footer Links -->
+                    <div class="login-footer">
+
+                        <p>
+                            By continuing, you are accessing
+                            the HemoConnect campus platform.
+                        </p>
+
+                        <a
+                            href="{{ url_for('home') }}"
+                            class="login-home-link"
+                        >
+                            ← Back to Home
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- Footer -->
+    <footer class="footer">
+
+        <a href="{{ url_for('home') }}" class="logo footer-logo">
+            <span class="logo-icon">+</span>
+            HemoConnect
+        </a>
+
+        <p>Connecting Donors, Saving Lives.</p>
+
+        <p class="copyright">
+            © 2026 HemoConnect. A campus community initiative.
+        </p>
+
+    </footer>
+
+</body>
+
+</html>
+

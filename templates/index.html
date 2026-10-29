@@ -1,0 +1,385 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>HemoConnect | Connecting Donors, Saving Lives</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <header class="navbar">
+
+        <a href="{{ url_for('home') }}#home" class="logo">
+            <span class="logo-icon">+</span>
+            HemoConnect
+        </a>
+
+        <nav>
+            <a href="{{ url_for('home') }}#home">Home</a>
+            <a href="{{ url_for('home') }}#about">About</a>
+            <a href="{{ url_for('home') }}#features">Features</a>
+            <a href="{{ url_for('home') }}#contact">Contact</a>
+
+            {% if session.get('donor_id') %}
+
+                <a href="{{ url_for('dashboard') }}" class="nav-button">
+                    Dashboard
+                </a>
+
+                <a href="{{ url_for('logout') }}" class="nav-button">
+                    Logout
+                </a>
+
+            {% else %}
+
+                <a href="{{ url_for('login') }}" class="nav-button">
+                    Login
+                </a>
+
+                <a href="{{ url_for('register') }}" class="nav-button">
+                    Register
+                </a>
+
+            {% endif %}
+        </nav>
+
+    </header>
+
+
+    <!-- Main Content -->
+    <main>
+
+        <!-- Hero Section -->
+        <section class="hero" id="home">
+
+            <div class="hero-content">
+
+                <p class="eyebrow">
+                    YOUR CAMPUS. YOUR COMMUNITY. YOUR LIFELINE.
+                </p>
+
+                <h1>
+                    One Donation.<br>
+                    <span>Countless Possibilities.</span>
+                </h1>
+
+                <p class="hero-description">
+                    HemoConnect connects eligible student blood donors
+                    within the college community, helping people find
+                    potential donors when they need them most.
+                </p>
+
+                <div class="hero-buttons">
+
+                    <a href="{{ url_for('register') }}"
+                       class="button primary">
+                        Become a Donor →
+                    </a>
+
+                    <a href="#about"
+                       class="button secondary">
+                        Discover HemoConnect
+                    </a>
+
+                </div>
+
+                <div class="hero-note">
+                    <span class="pulse-dot"></span>
+                    Building a more connected campus community
+                </div>
+
+            </div>
+
+
+            <!-- Hero Visual -->
+            <div class="hero-visual">
+
+                <div class="blood-circle">
+                    <span class="blood-plus">+</span>
+                </div>
+
+                <div class="floating-card card-top">
+
+                    <span class="card-icon">♥</span>
+
+                    <div>
+                        <strong>Give Blood</strong>
+                        <p>Share the gift of life</p>
+                    </div>
+
+                </div>
+
+                <div class="floating-card card-bottom">
+
+                    <span class="card-icon green">✓</span>
+
+                    <div>
+                        <strong>Stay Connected</strong>
+                        <p>Help your campus community</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- About Section -->
+        <section class="section about-section" id="about">
+
+            <div class="section-heading">
+
+                <p class="eyebrow">ABOUT HEMOCONNECT</p>
+
+                <h2>
+                    A small connection can make
+                    <span>a big difference.</span>
+                </h2>
+
+                <p>
+                    HemoConnect is a college-focused blood donor
+                    registration platform designed to organise donor
+                    information and help authorised users identify
+                    potential donors during emergencies.
+                </p>
+
+            </div>
+
+
+            <div class="about-grid">
+
+                <div class="about-card">
+
+                    <div class="about-icon">♥</div>
+
+                    <h3>Connect</h3>
+
+                    <p>
+                        Bring student volunteers together through
+                        a shared commitment to helping others.
+                    </p>
+
+                </div>
+
+
+                <div class="about-card">
+
+                    <div class="about-icon">⌕</div>
+
+                    <h3>Find Potential Donors</h3>
+
+                    <p>
+                        Organise donor details by blood group,
+                        department and academic year.
+                    </p>
+
+                </div>
+
+
+                <div class="about-card">
+
+                    <div class="about-icon">✚</div>
+
+                    <h3>Support Emergencies</h3>
+
+                    <p>
+                        Help authorised coordinators identify
+                        potential donors who may be contacted.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Features Section -->
+        <section class="section features-section" id="features">
+
+            <div class="section-heading">
+
+                <p class="eyebrow">WHAT YOU CAN DO</p>
+
+                <h2>
+                    Designed for a
+                    <span>more caring campus.</span>
+                </h2>
+
+                <p>
+                    Simple features to make donor registration
+                    and coordination easier.
+                </p>
+
+            </div>
+
+
+            <div class="features-grid">
+
+                <!-- Feature 1 -->
+                <article class="feature-card">
+
+                    <div class="feature-number">01</div>
+
+                    <div class="feature-icon">♥</div>
+
+                    <h3>Donor Registration</h3>
+
+                    <p>
+                        Register your name, blood group,
+                        department and contact details.
+                    </p>
+
+                    <a href="{{ url_for('register') }}"
+                       class="feature-link">
+                        Register as a Donor →
+                    </a>
+
+                </article>
+
+
+                <!-- Feature 2 -->
+                <article class="feature-card">
+
+                    <div class="feature-number">02</div>
+
+                    <div class="feature-icon">⌕</div>
+
+                    <h3>Find Blood Donors</h3>
+
+                    <p>
+                        Submit a blood request and identify
+                        potential compatible donors through
+                        the HemoConnect matching system.
+                    </p>
+
+                    <a href="{{ url_for('request_blood') }}"
+                       class="feature-link">
+                        Request Blood →
+                    </a>
+
+                </article>
+
+
+                <!-- Feature 3 -->
+                <article class="feature-card">
+
+                    <div class="feature-number">03</div>
+
+                    <div class="feature-icon">✚</div>
+
+                    <h3>Emergency Coordination</h3>
+
+                    <p>
+                        Support emergency coordination by
+                        helping authorised users identify
+                        potential donors who may be contacted.
+                    </p>
+
+                    <a href="{{ url_for('home') }}#contact"
+                       class="feature-link">
+                        Learn More →
+                    </a>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- Call to Action Section -->
+        <section class="cta-section">
+
+            <div>
+
+                <p class="eyebrow">
+                    BE SOMEONE'S REASON TO HOPE
+                </p>
+
+                <h2>
+                    Your willingness to help<br>
+                    can make a difference.
+                </h2>
+
+                <p>
+                    Register your interest in becoming a potential
+                    campus blood donor.
+                </p>
+
+            </div>
+
+            <a href="{{ url_for('register') }}"
+               class="button light-button">
+                Join HemoConnect →
+            </a>
+
+        </section>
+
+
+        <!-- Contact Section -->
+        <section class="section contact-section" id="contact">
+
+            <div class="section-heading">
+
+                <p class="eyebrow">GET IN TOUCH</p>
+
+                <h2>
+                    Let's build a
+                    <span>stronger community.</span>
+                </h2>
+
+                <p>
+                    Contact your college's authorised HemoConnect
+                    coordinator for questions about donor registration
+                    and the campus initiative.
+                </p>
+
+            </div>
+
+            <a href="{{ url_for('register') }}"
+               class="button primary">
+                Become a Part of HemoConnect →
+            </a>
+
+        </section>
+
+    </main>
+
+
+    <!-- Footer -->
+    <footer class="footer">
+
+        <a href="{{ url_for('home') }}#home"
+           class="logo footer-logo">
+
+            <span class="logo-icon">+</span>
+            HemoConnect
+
+        </a>
+
+        <p>Connecting Donors, Saving Lives.</p>
+
+        <p class="copyright">
+            © 2026 HemoConnect. A campus community initiative.
+        </p>
+
+    </footer>
+
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>
+

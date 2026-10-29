@@ -1,0 +1,352 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>HemoConnect | Dashboard</title>
+
+    <!-- Connect CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        .dashboard-page {
+            min-height: 100vh;
+            background: #fffafa;
+        }
+
+        .dashboard-navbar {
+            padding: 20px 7%;
+            background: white;
+            border-bottom: 1px solid #ece5e6;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .dashboard-logo {
+            font-family: 'Manrope', sans-serif;
+            font-size: 23px;
+            font-weight: 800;
+            color: #20252b;
+        }
+
+        .dashboard-logo span {
+            color: #c92f43;
+        }
+
+        .dashboard-container {
+            width: min(1000px, 90%);
+            margin: 45px auto;
+        }
+
+        .dashboard-header {
+            margin-bottom: 30px;
+        }
+
+        .dashboard-header .eyebrow {
+            color: #c92f43;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .dashboard-header h1 {
+            font-family: 'Manrope', sans-serif;
+            font-size: clamp(30px, 5vw, 43px);
+            line-height: 1.25;
+            color: #20252b;
+            margin-bottom: 8px;
+        }
+
+        .dashboard-header h1 span {
+            color: #c92f43;
+        }
+
+        .dashboard-header p {
+            color: #5e6670;
+            font-size: 15px;
+        }
+
+        .dashboard-card {
+            background: white;
+            border: 1px solid #ece5e6;
+            border-radius: 18px;
+            padding: 32px;
+            box-shadow: 0 15px 45px rgba(54, 25, 31, 0.08);
+        }
+
+        .dashboard-card h2 {
+            font-family: 'Manrope', sans-serif;
+            color: #20252b;
+            font-size: 22px;
+            margin-bottom: 7px;
+        }
+
+        .card-description {
+            color: #5e6670;
+            font-size: 13px;
+            margin-bottom: 25px;
+        }
+
+        .dashboard-info {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 17px;
+        }
+
+        .info-item {
+            padding: 17px;
+            background: #fff5f6;
+            border: 1px solid #f5e4e7;
+            border-radius: 11px;
+            overflow-wrap: anywhere;
+        }
+
+        .info-label {
+            display: block;
+            font-size: 12px;
+            color: #5e6670;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-size: 15px;
+            font-weight: 700;
+            color: #20252b;
+        }
+
+        .blood-group-value {
+            color: #c92f43;
+            font-size: 23px;
+        }
+
+        .availability-box {
+            margin-top: 22px;
+            padding: 17px;
+            border-radius: 11px;
+            background: #eaf8f0;
+            border: 1px solid #c8ead6;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .availability-box.unavailable {
+            background: #fff0f2;
+            border-color: #f5c6ce;
+        }
+
+        .availability-label {
+            font-size: 12px;
+            color: #5e6670;
+            font-weight: 600;
+        }
+
+        .availability-status {
+            display: block;
+            font-size: 15px;
+            font-weight: 700;
+            color: #17613e;
+        }
+
+        .unavailable .availability-status {
+            color: #a91f35;
+        }
+
+        .availability-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            background: #247b5a;
+            border-radius: 50%;
+            margin-right: 7px;
+        }
+
+        .unavailable .availability-dot {
+            background: #c92f43;
+        }
+
+        .dashboard-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 13px;
+            margin-top: 27px;
+        }
+
+        .dashboard-actions form {
+            margin: 0;
+        }
+
+        .dashboard-actions .button {
+            min-height: 46px;
+        }
+
+        .dashboard-footer {
+            text-align: center;
+            padding: 20px;
+            color: #858b92;
+            font-size: 12px;
+        }
+
+        @media (max-width: 600px) {
+            .dashboard-navbar {
+                padding: 17px 5%;
+            }
+
+            .dashboard-container {
+                width: 92%;
+                margin: 28px auto;
+            }
+
+            .dashboard-card {
+                padding: 22px;
+            }
+
+            .dashboard-info {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-actions {
+                flex-direction: column;
+            }
+
+            .dashboard-actions .button {
+                width: 100%;
+            }
+
+            .dashboard-actions form {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body class="dashboard-page">
+
+    <!-- Navigation -->
+    <header class="dashboard-navbar">
+        <a href="{{ url_for('dashboard') }}" class="dashboard-logo">
+            ♥ Hemo<span>Connect</span>
+        </a>
+
+        <a href="{{ url_for('logout') }}" class="button secondary">
+            Logout
+        </a>
+    </header>
+
+    <main class="dashboard-container">
+
+        <!-- Welcome section -->
+        <section class="dashboard-header">
+            <p class="eyebrow">YOUR PERSONAL SPACE</p>
+
+            <h1>Welcome back, <span>{{ donor["full_name"] }}</span>!</h1>
+
+            <p>
+                Your generosity can make a difference.
+                Manage your donor profile and availability here.
+            </p>
+        </section>
+
+        <!-- Donor details -->
+        <section class="dashboard-card">
+
+            <h2>Your Donor Dashboard</h2>
+
+            <p class="card-description">
+                Here are the details associated with your donor profile.
+            </p>
+
+            <div class="dashboard-info">
+
+                <div class="info-item">
+                    <span class="info-label">Full Name</span>
+                    <span class="info-value">{{ donor["full_name"] }}</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">Email Address</span>
+                    <span class="info-value">{{ donor["email"] }}</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">Blood Group</span>
+                    <span class="info-value blood-group-value">
+                        {{ donor["blood_group"] }}
+                    </span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">Department</span>
+                    <span class="info-value">{{ donor["department"] }}</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">Academic Year</span>
+                    <span class="info-value">{{ donor["academic_year"] }}</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">Current Location</span>
+                    <span class="info-value">{{ donor["location"] }}</span>
+                </div>
+
+            </div>
+
+            <!-- Availability -->
+            <div class="availability-box {% if not donor['available'] %}unavailable{% endif %}">
+
+                <div>
+                    <span class="availability-label">DONATION AVAILABILITY</span>
+
+                    <span class="availability-status">
+                        <span class="availability-dot"></span>
+
+                        {% if donor["available"] %}
+                            Available to Donate
+                        {% else %}
+                            Currently Unavailable
+                        {% endif %}
+                    </span>
+                </div>
+
+                <form action="{{ url_for('toggle_availability') }}" method="POST">
+                    <button type="submit" class="button primary">
+                        Change Availability
+                    </button>
+                </form>
+
+            </div>
+
+            <!-- Actions -->
+            <div class="dashboard-actions">
+
+                <a href="{{ url_for('request_blood') }}" class="button primary">
+                    Request Blood →
+                </a>
+
+                <a href="{{ url_for('logout') }}" class="button secondary">
+                    Logout
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer class="dashboard-footer">
+        HemoConnect · Connecting donors, supporting lives.
+    </footer>
+
+</body>
+</html>
+

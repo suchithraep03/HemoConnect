@@ -1,0 +1,741 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Blood Request Results | HemoConnect</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7f5;
+            color: #26352d;
+            padding: 25px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: #176b4d;
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            line-height: 1.7;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        .card h2 {
+            color: #176b4d;
+            margin-bottom: 18px;
+        }
+
+        .request-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+        }
+
+        .detail {
+            background: #f1f7f3;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-wrap: anywhere;
+        }
+
+        .detail strong {
+            display: block;
+            margin-bottom: 7px;
+            color: #176b4d;
+        }
+
+        .status,
+        .badge {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status,
+        .waiting {
+            background: #fff0d5;
+            color: #865b00;
+        }
+
+        .available,
+        .accepted {
+            background: #d8f5df;
+            color: #176b32;
+        }
+
+        .unavailable,
+        .declined {
+            background: #ffe1e1;
+            color: #a32121;
+        }
+
+        /* FILTER SECTION */
+
+        .filter-panel {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(180px, 1fr)) auto;
+            gap: 18px;
+            align-items: end;
+            padding: 20px;
+            margin: 20px 0;
+            background: #f1f7f3;
+            border: 1px solid #dce9e0;
+            border-radius: 10px;
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: bold;
+            color: #176b4d;
+        }
+
+        .filter-group select {
+            width: 100%;
+            padding: 12px;
+            background: white;
+            border: 1px solid #cedbd2;
+            border-radius: 7px;
+            font-size: 14px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            margin: 3px;
+        }
+
+        .reset-button {
+            background: #dfe9e3;
+            color: #26352d;
+            padding: 12px 17px;
+        }
+
+        .accept-button,
+        .dashboard-button {
+            background: #176b4d;
+            color: white;
+        }
+
+        .decline-button {
+            background: #b83232;
+            color: white;
+        }
+
+        .home-button {
+            background: #e4ece7;
+            color: #26352d;
+        }
+
+        .button:hover {
+            opacity: 0.85;
+        }
+
+        .results-count {
+            margin: 18px 0;
+            font-size: 15px;
+            color: #526157;
+        }
+
+        .results-count strong {
+            color: #176b4d;
+        }
+
+        /* DONOR TABLE */
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid #e5ebe7;
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1250px;
+        }
+
+        th,
+        td {
+            padding: 13px;
+            text-align: left;
+            border-bottom: 1px solid #e5ebe7;
+            vertical-align: middle;
+            font-size: 13px;
+        }
+
+        th {
+            background: #176b4d;
+            color: white;
+            white-space: nowrap;
+        }
+
+        tbody tr:hover {
+            background: #f7faf8;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .phone-number {
+            white-space: nowrap;
+            font-weight: bold;
+            color: #176b4d;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 35px 20px;
+            background: #f1f7f3;
+            border-radius: 10px;
+            line-height: 1.8;
+        }
+
+        .empty-state h3 {
+            color: #176b4d;
+            margin-bottom: 10px;
+        }
+
+        .notice {
+            margin-top: 18px;
+            padding: 15px;
+            background: #fff5df;
+            border-left: 4px solid #e2a52b;
+            border-radius: 5px;
+            line-height: 1.7;
+            font-size: 13px;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #66756c;
+            font-size: 13px;
+        }
+
+        @media (max-width: 800px) {
+            .filter-panel {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 12px;
+            }
+
+            .header,
+            .card {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- PAGE HEADER -->
+
+    <header class="header">
+        <h1>♥ HemoConnect</h1>
+
+        <p>Blood Request Matching Results</p>
+
+        <p>
+            {% if is_requester %}
+                Your blood request has been recorded successfully.
+            {% else %}
+                You have been identified as a potential donor
+                for a blood request.
+            {% endif %}
+        </p>
+    </header>
+
+
+    <!-- REQUEST DETAILS -->
+
+    <section class="card">
+
+        <h2>Request Details</h2>
+
+        <div class="request-details">
+
+            <div class="detail">
+                <strong>Request ID</strong>
+                #{{ blood_request["id"] }}
+            </div>
+
+            <div class="detail">
+                <strong>Patient's Name</strong>
+                {{ blood_request["requester_name"] }}
+            </div>
+
+            <div class="detail">
+                <strong>Required Blood Group</strong>
+                {{ blood_request["blood_group"] }}
+            </div>
+
+            <div class="detail">
+                <strong>Blood Component</strong>
+                {{ blood_request["component"] }}
+            </div>
+
+            <div class="detail">
+                <strong>Units Required</strong>
+                {{ blood_request["units"] }}
+            </div>
+
+            <div class="detail">
+                <strong>Hospital</strong>
+                {{ blood_request["hospital_name"] }}
+            </div>
+
+            <div class="detail">
+                <strong>Hospital Address</strong>
+                {{ blood_request["hospital_address"] }}
+            </div>
+
+            <div class="detail">
+                <strong>Urgency</strong>
+                {{ blood_request["urgency"] }}
+            </div>
+
+            <div class="detail">
+                <strong>Request Status</strong>
+                <span class="status">
+                    {{ blood_request["status"] }}
+                </span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- MATCHING DONORS -->
+
+    <section class="card">
+
+        <h2>Eligible Donors</h2>
+
+        {% if matches and matches|length > 0 %}
+
+            <p>
+                Total compatible matches:
+                <strong>{{ matches|length }}</strong>
+            </p>
+
+            <!-- FILTER CONTROLS -->
+
+            <div class="filter-panel">
+
+                <div class="filter-group">
+                    <label for="yearFilter">Filter by Academic Year</label>
+
+                    <select id="yearFilter">
+                        <option value="">All Years</option>
+
+                        {% for year in academic_years %}
+                            <option value="{{ year }}">
+                                {{ year }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="departmentFilter">Filter by Department</label>
+
+                    <select id="departmentFilter">
+                        <option value="">All Departments</option>
+
+                        {% for department in departments %}
+                            <option value="{{ department }}">
+                                {{ department }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div>
+                    <button
+                        type="button"
+                        id="resetFilters"
+                        class="button reset-button"
+                    >
+                        Reset Filters
+                    </button>
+                </div>
+
+            </div>
+
+            <p class="results-count" aria-live="polite">
+                Showing <strong id="visibleCount">{{ matches|length }}</strong>
+                of <strong>{{ matches|length }}</strong> matching donors.
+            </p>
+
+            <!-- DONOR TABLE -->
+
+            <div class="table-wrapper">
+
+                <table id="donorTable">
+
+                    <thead>
+                        <tr>
+                            <th>Student ID</th>
+                            <th>Donor Name</th>
+                            <th>Phone Number</th>
+                            <th>Blood Group</th>
+                            <th>Department</th>
+                            <th>Academic Year</th>
+                            <th>Location</th>
+                            <th>Last Donation</th>
+                            <th>Availability</th>
+                            <th>Response</th>
+
+                            {% if not is_requester %}
+                                <th>Action</th>
+                            {% endif %}
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for match in matches %}
+
+                            <tr
+                                data-year="{{ match['academic_year'] or '' }}"
+                                data-department="{{ match['department'] or '' }}"
+                            >
+
+                                <td>
+                                    {{ match["student_id"] or "Not provided" }}
+                                </td>
+
+                                <td>
+                                    {{ match["full_name"] }}
+                                </td>
+
+                                <td class="phone-number">
+                                    {{ match["phone"] or "Not provided" }}
+                                </td>
+
+                                <td>
+                                    <strong>{{ match["blood_group"] }}</strong>
+                                </td>
+
+                                <td>
+                                    {{ match["department"] or "Not provided" }}
+                                </td>
+
+                                <td>
+                                    {{ match["academic_year"] or "Not provided" }}
+                                </td>
+
+                                <td>
+                                    {{ match["location"] or "Not provided" }}
+                                </td>
+
+                                <td>
+                                    {{ match["last_donation_date"] or "Not provided" }}
+                                </td>
+
+                                <td>
+                                    {% if match["available"] == 1 %}
+                                        <span class="badge available">
+                                            Available
+                                        </span>
+                                    {% else %}
+                                        <span class="badge unavailable">
+                                            Unavailable
+                                        </span>
+                                    {% endif %}
+                                </td>
+
+                                <td>
+                                    {% set response = match["donor_response"] %}
+
+                                    {% if response == "Available" %}
+                                        <span class="badge accepted">
+                                            Accepted
+                                        </span>
+                                    {% elif response == "Unavailable" %}
+                                        <span class="badge declined">
+                                            Declined
+                                        </span>
+                                    {% else %}
+                                        <span class="badge waiting">
+                                            Awaiting Response
+                                        </span>
+                                    {% endif %}
+                                </td>
+
+                                {% if not is_requester %}
+                                    <td>
+                                        {% if match["donor_id"] == current_donor_id %}
+
+                                            <form
+                                                method="POST"
+                                                action="{{ url_for(
+                                                    'match_response',
+                                                    match_id=match['match_id']
+                                                ) }}"
+                                            >
+
+                                                <button
+                                                    type="submit"
+                                                    name="response"
+                                                    value="Available"
+                                                    class="button accept-button"
+                                                >
+                                                    I Can Donate
+                                                </button>
+
+                                                <button
+                                                    type="submit"
+                                                    name="response"
+                                                    value="Unavailable"
+                                                    class="button decline-button"
+                                                >
+                                                    Cannot Donate
+                                                </button>
+
+                                            </form>
+
+                                        {% else %}
+                                            <span>—</span>
+                                        {% endif %}
+                                    </td>
+                                {% endif %}
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <div id="noFilteredResults"
+                 class="empty-state"
+                 style="display: none; margin-top: 20px;">
+
+                <h3>No Donors Match These Filters</h3>
+
+                <p>
+                    Try selecting another academic year or department,
+                    or reset the filters to view all compatible donors.
+                </p>
+
+            </div>
+
+        {% else %}
+
+            <div class="empty-state">
+
+                <h3>No Matching Donors Found</h3>
+
+                <p>
+                    No eligible donors were found for this request
+                    using the current matching criteria.
+                </p>
+
+                {% if blood_request["component"] != "Red Blood Cells" %}
+
+                    <p>
+                        Automated donor matching is currently implemented
+                        only for Red Blood Cells.
+                    </p>
+
+                {% else %}
+
+                    <p>
+                        Try again later or contact the college's
+                        authorized blood donation coordinator.
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+        {% endif %}
+
+
+        <!-- SAFETY NOTICE -->
+
+        <div class="notice">
+
+            <strong>Important:</strong>
+
+            These results are potential donor matches for a college
+            demonstration system. Donor eligibility, blood compatibility,
+            donation intervals, and availability must be confirmed by
+            qualified healthcare professionals or an authorized blood bank.
+            A match does not guarantee that a donor can safely donate.
+
+            Use fictional contact details in demonstration data.
+            Share donor contact information only with appropriate authorization.
+
+        </div>
+
+    </section>
+
+
+    <!-- NAVIGATION -->
+
+    <section class="card">
+
+        <h2>Next Steps</h2>
+
+        {% if is_requester %}
+
+            <p>
+                Review the matching donors and their responses.
+                Coordinate with the authorized hospital or blood bank
+                to confirm the donation.
+            </p>
+
+        {% else %}
+
+            <p>
+                If you are willing and eligible to donate, select
+                "I Can Donate". Otherwise, select "Cannot Donate".
+            </p>
+
+        {% endif %}
+
+        <div class="actions">
+
+            <a
+                href="{{ url_for('dashboard') }}"
+                class="button dashboard-button"
+            >
+                Back to Dashboard
+            </a>
+
+            <a
+                href="{{ url_for('home') }}"
+                class="button home-button"
+            >
+                Home
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <footer>
+        HemoConnect | College Blood Donor Coordination System
+    </footer>
+
+</div>
+
+
+<!-- FILTER FUNCTIONALITY -->
+
+<script>
+    const yearFilter = document.getElementById("yearFilter");
+    const departmentFilter = document.getElementById("departmentFilter");
+    const resetButton = document.getElementById("resetFilters");
+    const visibleCount = document.getElementById("visibleCount");
+    const noFilteredResults = document.getElementById("noFilteredResults");
+
+    function filterDonors() {
+        const selectedYear = yearFilter.value;
+        const selectedDepartment = departmentFilter.value;
+
+        const rows = document.querySelectorAll("#donorTable tbody tr");
+        let visible = 0;
+
+        rows.forEach(function(row) {
+            const donorYear = row.dataset.year;
+            const donorDepartment = row.dataset.department;
+
+            const yearMatches =
+                selectedYear === "" || donorYear === selectedYear;
+
+            const departmentMatches =
+                selectedDepartment === "" ||
+                donorDepartment === selectedDepartment;
+
+            const showRow = yearMatches && departmentMatches;
+
+            row.style.display = showRow ? "" : "none";
+
+            if (showRow) {
+                visible++;
+            }
+        });
+
+        visibleCount.textContent = visible;
+
+        noFilteredResults.style.display =
+            visible === 0 ? "block" : "none";
+    }
+
+    yearFilter.addEventListener("change", filterDonors);
+    departmentFilter.addEventListener("change", filterDonors);
+
+    resetButton.addEventListener("click", function() {
+        yearFilter.value = "";
+        departmentFilter.value = "";
+        filterDonors();
+    });
+</script>
+
+</body>
+</html>
+

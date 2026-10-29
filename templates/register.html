@@ -1,0 +1,373 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Donor Registration | HemoConnect</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body class="register-page">
+
+    <!-- Navigation -->
+    <header class="navbar">
+
+        <a href="{{ url_for('home') }}#home" class="logo">
+            <span class="logo-icon">+</span>
+            HemoConnect
+        </a>
+
+        <nav>
+            <a href="{{ url_for('home') }}#home">Home</a>
+            <a href="{{ url_for('home') }}#about">About</a>
+            <a href="{{ url_for('home') }}#features">Features</a>
+            <a href="{{ url_for('login') }}">Login</a>
+        </nav>
+
+    </header>
+
+
+    <!-- Registration Section -->
+    <main class="registration-container">
+
+        <!-- Introduction -->
+        <section class="registration-intro">
+
+            <p class="eyebrow">
+                JOIN OUR CAMPUS DONOR NETWORK
+            </p>
+
+            <h1>
+                Become a <span>blood donor.</span>
+            </h1>
+
+            <p>
+                Join HemoConnect and become part of a campus
+                community that connects potential blood donors
+                with people who may need assistance.
+            </p>
+
+            <a href="{{ url_for('home') }}" class="back-link">
+                ← Back to Home
+            </a>
+
+        </section>
+
+
+        <!-- Registration Form -->
+        <section class="form-card">
+
+            <div class="form-heading">
+
+                <h2>Donor Registration</h2>
+
+                <p>
+                    Please provide your details below.
+                </p>
+
+            </div>
+
+
+            <!-- Error Message -->
+            {% if error %}
+
+                <div class="message error-message" role="alert">
+                    {{ error }}
+                </div>
+
+            {% endif %}
+
+
+            <!-- Success Message -->
+            {% if success %}
+
+                <div class="message success-message" role="status">
+                    {{ success }}
+                </div>
+
+            {% endif %}
+
+
+            <form method="POST"
+                  action="{{ url_for('register') }}"
+                  id="donorForm">
+
+                <div class="form-grid">
+
+                    <!-- Full Name -->
+                    <div class="form-group">
+
+                        <label for="full_name">
+                            Full Name *
+                        </label>
+
+                        <input
+                            type="text"
+                            id="full_name"
+                            name="full_name"
+                            maxlength="100"
+                            autocomplete="name"
+                            placeholder="Enter your full name"
+                            required>
+
+                    </div>
+
+
+                    <!-- Email -->
+                    <div class="form-group">
+
+                        <label for="email">
+                            Email Address *
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            maxlength="254"
+                            autocomplete="email"
+                            placeholder="Enter your email address"
+                            required>
+
+                        <small>
+                            Use the same email whenever you log in.
+                        </small>
+
+                    </div>
+
+
+                    <!-- Phone -->
+                    <div class="form-group">
+
+                        <label for="phone">
+                            Phone Number *
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="phone"
+                            name="phone"
+                            maxlength="20"
+                            autocomplete="tel"
+                            placeholder="Enter your phone number"
+                            required>
+
+                    </div>
+
+
+                    <!-- Blood Group -->
+                    <div class="form-group">
+
+                        <label for="blood_group">
+                            Blood Group *
+                        </label>
+
+                        <select id="blood_group"
+                                name="blood_group"
+                                required>
+
+                            <option value="">
+                                Select blood group
+                            </option>
+
+                            {% for group in blood_groups %}
+
+                                <option value="{{ group }}">
+                                    {{ group }}
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Department -->
+                    <div class="form-group">
+
+                        <label for="department">
+                            Department *
+                        </label>
+
+                        <select id="department"
+                                name="department"
+                                required>
+
+                            <option value="">
+                                Select department
+                            </option>
+
+                            {% for dept in departments %}
+
+                                <option value="{{ dept }}">
+                                    {{ dept }}
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Academic Year -->
+                    <div class="form-group">
+
+                        <label for="academic_year">
+                            Academic Year *
+                        </label>
+
+                        <select id="academic_year"
+                                name="academic_year"
+                                required>
+
+                            <option value="">
+                                Select academic year
+                            </option>
+
+                            {% for year in academic_years %}
+
+                                <option value="{{ year }}">
+                                    {{ year }}
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Last Donation Date -->
+                    <div class="form-group">
+
+                        <label for="last_donation_date">
+                            Last Donation Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="last_donation_date"
+                            name="last_donation_date">
+
+                        <small>
+                            Leave blank if you have never donated.
+                        </small>
+
+                    </div>
+
+
+                    <!-- Manual Location -->
+                    <div class="form-group">
+
+                        <label for="location">
+                            Campus / City *
+                        </label>
+
+                        <input
+                            type="text"
+                            id="location"
+                            name="location"
+                            maxlength="150"
+                            placeholder="Enter your campus or city"
+                            required>
+
+                        <small>
+                            Enter your location manually. GPS is not used.
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Consent -->
+                <div class="consent-box">
+
+                    <input
+                        type="checkbox"
+                        id="consent"
+                        name="consent"
+                        value="yes"
+                        required>
+
+                    <label for="consent">
+                        I voluntarily agree to register as a potential
+                        blood donor. I consent to authorised HemoConnect
+                        coordinators using my submitted information for
+                        donor coordination.
+                    </label>
+
+                </div>
+
+
+                <!-- Submit Button -->
+                <button
+                    class="button primary submit-button"
+                    type="submit">
+
+                    Register as a Donor →
+
+                </button>
+
+
+                <!-- Login Link -->
+                <div class="form-login-link">
+
+                    <p>
+                        Already registered?
+                        <a href="{{ url_for('login') }}">
+                            Login here
+                        </a>
+                    </p>
+
+                </div>
+
+
+                <!-- Disclaimer -->
+                <p class="form-footnote">
+                    Registration does not guarantee medical eligibility
+                    to donate blood. Eligibility should be assessed by
+                    qualified healthcare professionals.
+                </p>
+
+            </form>
+
+        </section>
+
+    </main>
+
+
+    <!-- Footer -->
+    <footer class="footer">
+
+        <a href="{{ url_for('home') }}"
+           class="logo footer-logo">
+
+            <span class="logo-icon">+</span>
+            HemoConnect
+
+        </a>
+
+        <p>Connecting Donors, Saving Lives.</p>
+
+        <p class="copyright">
+            © 2026 HemoConnect. A campus community initiative.
+        </p>
+
+    </footer>
+
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>
+
